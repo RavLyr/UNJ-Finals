@@ -1610,7 +1610,7 @@
 
 /* RuangAcara: print-friendly ticket */
 @media print {
-  .site-header, .site-footer, .ticket-page__actions { display: none !important; }
-  .ticket-page { padding: 0; }
-  .ticket { box-shadow: none; margin: 0 auto; }
+  .landing-page .navbar, .landing-page .footer, .landing-page .ticket-page__actions { display: none !important; }
+  .landing-page .ticket-page { padding: 0; }
+  .landing-page .ticket { box-shadow: none; margin: 0 auto; }
 }

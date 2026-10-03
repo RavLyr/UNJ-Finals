@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { desc, eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
+import { authDestination } from "@/lib/auth.config";
 import { formatEventDate } from "@/lib/format-date";
-import { getDb } from "@/server/db";
-import { events, registrations, workspaces } from "@/server/db/schema";
+import { getAttendeeTickets } from "@/server/queries/tickets";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -18,23 +17,10 @@ const statusBadge: Record<string, { className: string; label: string }> = {
 
 export default async function TicketsPage() {
   const session = await auth();
-  if (!session?.user) redirect("/signin?redirect=/tickets");
+  if (!session?.user?.id) redirect("/signin?redirect=/tickets");
+  if (session.user.role !== "attendee") redirect(authDestination(session.user.role));
 
-  const rows = await getDb()
-    .select({
-      ticketId: registrations.ticketId,
-      eventTitle: events.title,
-      eventSlug: events.slug,
-      eventDateTime: events.dateTime,
-      eventSpeaker: events.speaker,
-      eventStatus: events.status,
-      workspaceSlug: workspaces.slug,
-    })
-    .from(registrations)
-    .innerJoin(events, eq(registrations.eventId, events.id))
-    .innerJoin(workspaces, eq(events.workspaceId, workspaces.id))
-    .where(eq(registrations.attendeeId, session.user.id))
-    .orderBy(desc(registrations.createdAt));
+  const rows = await getAttendeeTickets();
 
   return (
     <div className="landing-page">
