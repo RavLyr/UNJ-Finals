@@ -41,8 +41,8 @@ export function RegistrationPanel({ event, sessionName, sessionEmail }: Registra
         {event.status === "published" && !isFull && (
           <RegistrationForm
             eventId={event.id}
-            defaultName={sessionName}
-            defaultEmail={sessionEmail}
+            attendeeName={sessionName}
+            attendeeEmail={sessionEmail}
           />
         )}
 
