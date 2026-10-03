@@ -40,11 +40,13 @@ export function AuthForm({ mode, returnUrl, registered = false, preview = false 
           <div key={field.name} className="space-y-2">
             <label htmlFor={field.name} className="block text-sm font-medium">{field.label}</label>
             <input name={field.name} type={field.type} autoComplete={field.autoComplete} id={field.name} required
+              minLength={signup && field.type === "password" ? 12 : undefined}
               maxLength={field.name === "name" ? 100 : field.name === "email" ? 200 : undefined}
               aria-invalid={Boolean(errors?.[field.name])}
               aria-describedby={errors?.[field.name] ? `${field.name}-error` : undefined}
               className="h-11 w-full rounded-md border border-input bg-background px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-invalid:border-red-700" />
             {errors?.[field.name] && <p id={`${field.name}-error`} className="text-sm text-red-700">{errors[field.name]}</p>}
+            {signup && field.name === "password" && <p className="text-sm text-muted-foreground">Minimal 12 karakter, maksimal 72 byte.</p>}
           </div>
         ))}
         {signup && <div className="space-y-2">

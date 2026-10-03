@@ -12,8 +12,13 @@ import { registrationSchema } from "@/lib/validations";
 import type { ActionResult } from "@/lib/types";
 import { getDb } from "@/server/db";
 import { users } from "@/server/db/schema";
+import { isReservedAdminEmail } from "@/lib/account-policy";
 
 const signupSchema = credentialsSchema.extend({
+  password: credentialsSchema.shape.password.refine(
+    (value) => Array.from(value).length >= 12,
+    "Kata sandi minimal 12 karakter",
+  ),
   name: registrationSchema.shape.name,
   role: z.enum(["organizer", "attendee"], { message: "Pilih jenis akun" }),
   confirmPassword: z.string().min(1, "Konfirmasi kata sandi wajib diisi"),
@@ -58,9 +63,12 @@ export async function registerAccount(
   const parsed = signupSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return validationFailure(parsed.error);
   const { name, email, password, role } = parsed.data;
+  if (isReservedAdminEmail(email)) {
+    return { success: false, error: "Pendaftaran tidak dapat dilakukan dengan email ini." };
+  }
   try {
     const passwordHash = await hash(password, 12);
-    const [created] = await getDb().insert(users).values({ name, email, passwordHash, role: accountRole(email, role) })
+    const [created] = await getDb().insert(users).values({ name, email, passwordHash, role })
       .onConflictDoNothing({ target: users.email }).returning({ id: users.id });
     if (!created) return { success: false, error: "Email sudah terdaftar", fieldErrors: { email: "Email sudah terdaftar" } };
   } catch {

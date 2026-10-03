@@ -11,6 +11,8 @@ import { registrationSchema } from "@/lib/validations";
 import { generateSlug } from "@/lib/slug";
 import { getDb } from "@/server/db";
 import { users, workspaces } from "@/server/db/schema";
+import { accountRole } from "@/lib/account-policy";
+export { accountRole } from "@/lib/account-policy";
 
 export const previewNotice = "Mode pratinjau: perubahan dan pendaftaran dinonaktifkan.";
 
@@ -21,12 +23,6 @@ export const credentialsSchema = z.object({
     "Kata sandi maksimal 72 byte",
   ),
 });
-
-export function accountRole(email: string, role: typeof users.$inferSelect.role) {
-  const allowlist = (process.env.PLATFORM_ADMIN_EMAILS ?? "")
-    .split(",").map((value) => value.trim().toLowerCase()).filter(Boolean);
-  return allowlist.includes(email) ? "platform_admin" : role === "platform_admin" ? "attendee" : role;
-}
 
 class PreviewBootstrapError extends CredentialsSignin {
   code = "preview_read_only";
