@@ -9,6 +9,7 @@ export type PublicEvent = {
   event: Event;
   workspace: Pick<Workspace, "id" | "name" | "slug">;
   organizerEmail: string;
+  organizerName: string | null;
 };
 
 export async function getPublishedEvents(): Promise<PublishedEvent[]> {
@@ -36,6 +37,7 @@ export async function getEventByWorkspaceSlug(
       event: events,
       workspace: { id: workspaces.id, name: workspaces.name, slug: workspaces.slug },
       organizerEmail: users.email,
+      organizerName: users.name,
     })
     .from(events)
     .innerJoin(workspaces, eq(events.workspaceId, workspaces.id))
