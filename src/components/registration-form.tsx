@@ -48,7 +48,7 @@ export function RegistrationForm({ eventId, defaultName, defaultEmail }: Registr
       </div>
 
       {state?.success === false && state.error && (
-        <p role="alert" className="event-card__stock" style={{ marginBottom: "var(--space-md)" }}>
+        <p role="alert" className="event-card__stock" style={{ marginBottom: "var(--landing-space-md)" }}>
           {state.error}
         </p>
       )}

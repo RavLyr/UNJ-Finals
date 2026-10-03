@@ -1,6 +1,6 @@
-// Run: bun src/app/signin/auth.check.ts
+// Run: bun scripts/checks/auth.check.ts
 import assert from "node:assert/strict";
-import authConfig, { authDestination } from "../../lib/auth.config";
+import authConfig, { authDestination } from "../../src/lib/auth.config";
 
 const event = "/w/komunitas-teknologi/events/webinar-ai";
 assert.equal(authDestination("attendee", event), event);
