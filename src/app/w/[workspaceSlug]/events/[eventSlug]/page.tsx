@@ -1,13 +1,10 @@
 import { notFound } from "next/navigation";
-import { and, eq, isNull } from "drizzle-orm";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { RegistrationPanel } from "@/components/registration-panel";
-import { getDb } from "@/server/db";
-import { events, workspaces, users } from "@/server/db/schema";
+import { getEventByWorkspaceSlug } from "@/server/queries/public";
 import { auth } from "@/lib/auth";
 import { formatEventDate } from "@/lib/format-date";
-import type { Event } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -18,43 +15,22 @@ interface EventDetailPageProps {
 export default async function EventDetailPage({ params }: EventDetailPageProps) {
   const { workspaceSlug, eventSlug } = await params;
 
-  const rows = await getDb()
-    .select({
-      event: events,
-      workspaceSlug: workspaces.slug,
-      workspaceName: workspaces.name,
-      organizerEmail: users.email,
-      organizerName: users.name,
-    })
-    .from(events)
-    .innerJoin(workspaces, eq(events.workspaceId, workspaces.id))
-    .innerJoin(users, eq(workspaces.ownerId, users.id))
-    .where(
-      and(
-        eq(workspaces.slug, workspaceSlug),
-        eq(events.slug, eventSlug),
-        isNull(events.deletedAt),
-      ),
-    )
-    .limit(1);
-
-  const row = rows[0];
+  const row = await getEventByWorkspaceSlug(workspaceSlug, eventSlug);
   if (!row) notFound();
 
-  const event = row.event as Event;
-  if (event.status === "draft") notFound();
+  const { event } = row;
 
   const session = await auth();
   const sessionName = session?.user?.name ?? "";
   const sessionEmail = session?.user?.email ?? "";
 
   return (
-    <>
+    <div className="landing-page">
       <SiteHeader />
       <main className="event-detail">
         <div className="container">
           {event.status === "cancelled" && (
-            <div className="chip chip--danger" style={{ display: "block", padding: "16px", marginBottom: "var(--space-lg)" }}>
+            <div className="chip chip--danger" style={{ display: "block", padding: "16px", marginBottom: "var(--landing-space-lg)" }}>
               <strong>Event ini telah dibatalkan oleh organizer.</strong>
               {event.cancellationReason && <p style={{ margin: "4px 0 0" }}>{event.cancellationReason}</p>}
               <p style={{ margin: "4px 0 0" }}>
@@ -63,7 +39,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             </div>
           )}
           {event.status === "completed" && (
-            <div className="chip" style={{ display: "block", padding: "16px", marginBottom: "var(--space-lg)" }}>
+            <div className="chip" style={{ display: "block", padding: "16px", marginBottom: "var(--landing-space-lg)" }}>
               Event ini telah selesai. Tiket lama tetap dapat dilihat di dashboard Anda.
             </div>
           )}
@@ -86,8 +62,8 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                   {(row.organizerName ?? "O").charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: "var(--text-sm)" }}>
-                    {row.organizerName ?? row.workspaceName}
+                  <div style={{ fontWeight: 600, fontSize: "var(--landing-text-sm)" }}>
+                    {row.organizerName ?? row.workspace.name}
                   </div>
                   <div className="event-detail__hosts-label">Penyelenggara</div>
                 </div>
@@ -124,6 +100,6 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         </div>
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

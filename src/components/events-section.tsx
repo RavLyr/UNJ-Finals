@@ -14,7 +14,7 @@ export function EventsSection({ events }: EventsSectionProps) {
   return (
     <section id="event" className="section" style={{ paddingTop: 0 }}>
       <div className="container">
-        <h2 className="cta__title" style={{ fontSize: "var(--text-4xl)", textAlign: "left", marginBottom: "var(--space-xl)" }}>
+        <h2 className="cta__title" style={{ fontSize: "var(--landing-text-4xl)", textAlign: "left", marginBottom: "var(--landing-space-xl)" }}>
           Event mendatang
         </h2>
         {events.length === 0 ? (

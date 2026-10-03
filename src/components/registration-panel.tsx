@@ -28,7 +28,7 @@ export function RegistrationPanel({ event, sessionName, sessionEmail }: Registra
           <span className="event-detail__ticket-row-label">Harga tiket</span>
           <span className="event-detail__ticket-row-value event-card__price--free">Gratis</span>
         </div>
-        <hr className="divider" style={{ margin: "var(--space-md) 0" }} />
+        <hr className="divider" style={{ margin: "var(--landing-space-md) 0" }} />
         <div className="event-detail__quota">
           <div className="event-detail__quota-text">
             Sisa kuota: {remaining} dari {event.maxQuota}

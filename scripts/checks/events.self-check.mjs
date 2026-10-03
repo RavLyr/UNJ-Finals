@@ -1,11 +1,11 @@
-// Run: bun src/server/actions/events.self-check.mjs
+// Run: bun scripts/checks/events.self-check.mjs
 import assert from "node:assert/strict";
 import { mock } from "bun:test";
 
 mock.module("server-only", () => ({}));
 mock.module("@/lib/auth", () => ({ auth: () => null, previewNotice: "preview" }));
 mock.module("next/cache", () => ({ revalidatePath: () => {} }));
-const { canTransitionEvent } = await import("./helpers.ts");
+const { canTransitionEvent } = await import("../../src/server/actions/helpers.ts");
 
 // Explore whole lifecycle histories: no reachable terminal may reopen registration.
 const statuses = ["draft", "published", "cancelled", "completed"];
