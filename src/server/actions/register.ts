@@ -82,5 +82,6 @@ export async function registerParticipant(
     return actionFailure(error);
   }
   if (currentUrl) redirect(`/signin?redirect=${encodeURIComponent(currentUrl)}`);
-  redirect(`/tickets/${ticketId}`);
+  // ?registered=1 signals the ticket page to fire the CONTRACT §9 success toasts.
+  redirect(`/tickets/${ticketId}?registered=1`);
 }

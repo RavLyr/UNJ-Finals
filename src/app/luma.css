@@ -1588,3 +1588,29 @@
 .landing-page .hero__word span:nth-child(2) { color: #8b5cf6; }
 .landing-page .hero__word span:nth-child(3) { color: #06b6d4; }
 .landing-page .hero__word span:nth-child(4) { color: #10b981; }
+
+/* RuangAcara: tickets list */
+.landing-page .tickets-page { padding: var(--landing-space-3xl) 0; min-height: 60vh; }
+.landing-page .tickets-page__title { font-size: var(--landing-text-3xl); font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--landing-space-xs); }
+.landing-page .tickets-page__subtitle { color: var(--landing-color-text-muted); font-size: var(--landing-text-sm); margin-bottom: var(--landing-space-2xl); }
+.landing-page .tickets-page__empty { text-align: center; padding: var(--landing-space-3xl) 0; color: var(--landing-color-text-muted); display: flex; flex-direction: column; gap: var(--landing-space-lg); align-items: center; }
+.landing-page .tickets-list { list-style: none; display: flex; flex-direction: column; gap: var(--landing-space-md); max-width: 720px; }
+.landing-page .tickets-list__item { display: flex; align-items: center; justify-content: space-between; gap: var(--landing-space-md); padding: var(--landing-space-lg); background: var(--landing-color-surface); border: 1px solid var(--landing-color-border-light); border-radius: var(--landing-radius-lg); text-decoration: none; color: inherit; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.landing-page .tickets-list__item:hover { border-color: var(--landing-color-primary); box-shadow: var(--landing-shadow-md); }
+.landing-page .tickets-list__event { font-size: var(--landing-text-base); font-weight: 600; margin-bottom: 2px; }
+.landing-page .tickets-list__meta { font-size: var(--landing-text-sm); color: var(--landing-color-text-muted); margin-bottom: var(--landing-space-xs); }
+.landing-page .tickets-list__code { font-family: monospace; font-size: var(--landing-text-xs); letter-spacing: 0.08em; color: var(--landing-color-primary); font-weight: 600; }
+
+/* RuangAcara: ticket QR sizing (FRD: min 200px desktop, 150px mobile) */
+.landing-page .ticket__qr { width: 200px; height: 200px; }
+.landing-page .ticket__qr svg { width: 100%; height: 100%; display: block; }
+@media (max-width: 640px) {
+  .landing-page .ticket__qr { width: 150px; height: 150px; }
+}
+
+/* RuangAcara: print-friendly ticket */
+@media print {
+  .site-header, .site-footer, .ticket-page__actions { display: none !important; }
+  .ticket-page { padding: 0; }
+  .ticket { box-shadow: none; margin: 0 auto; }
+}
