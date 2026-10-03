@@ -22,6 +22,7 @@ const ATTENDEE_EMAILS = [
   "demo-attendee-1@example.com",
   "demo-attendee-2@example.com",
   "demo-attendee-3@example.com",
+  "demo-attendee-4@example.com",
 ] as const;
 
 const DAY = 86_400_000;
@@ -56,7 +57,7 @@ const seeds: EventSeed[] = [
       { name: "Budi Santoso", email: ATTENDEE_EMAILS[0], checkedIn: true },
       { name: "Citra Dewi", email: ATTENDEE_EMAILS[1], checkedIn: true },
       { name: "Dimas Anggara", email: ATTENDEE_EMAILS[2], checkedIn: false },
-      { name: "Eka Wulandari", email: ATTENDEE_EMAILS[0], checkedIn: false },
+      { name: "Eka Wulandari", email: ATTENDEE_EMAILS[3], checkedIn: false },
     ],
   },
   {
@@ -73,7 +74,7 @@ const seeds: EventSeed[] = [
     attendees: [
       { name: "Fajar Nugroho", email: ATTENDEE_EMAILS[1], checkedIn: false },
       { name: "Gita Ayu", email: ATTENDEE_EMAILS[2], checkedIn: false },
-      { name: "Hendra Kusuma", email: ATTENDEE_EMAILS[0], checkedIn: false },
+      { name: "Hendra Kusuma", email: ATTENDEE_EMAILS[3], checkedIn: false },
     ],
   },
   {
