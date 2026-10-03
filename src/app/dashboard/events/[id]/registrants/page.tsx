@@ -20,7 +20,7 @@ export default async function RegistrantsPage({ params }: { params: Promise<{ id
   const { id } = await params;
   const event = await getOrganizerEvent(id);
   if (!event) notFound();
-  const registrations = await getOrganizerRegistrants(event.id);
+  const registrations = (await getOrganizerRegistrants(event.id)) ?? [];
 
   return <>
     <Link href="/dashboard" className="inline-flex min-h-11 items-center rounded-sm text-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">Kembali ke daftar event</Link>
