@@ -1,0 +1,28 @@
+# Dependencies and build output
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Local credentials and deployment configuration
+.env*
+!.env.example
+!.env.*.example
+.vercel/
+*.pem
+*.key
+
+# Logs and OS metadata
+*.log
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+
+# Local agent artifacts
+.opencode/
+.playwright-mcp/
+graphify-out/
+text_*.json
