@@ -56,11 +56,11 @@ export default async function DashboardPage() {
             <caption className="sr-only">Daftar event milik workspace Anda</caption>
             <thead className="bg-muted">
               <tr>
-                <th scope="col" className="w-[28%] px-4 py-3 font-medium">Event</th>
-                <th scope="col" className="w-[28%] px-4 py-3 font-medium">Jadwal (WIB)</th>
+                <th scope="col" className="w-[24%] px-4 py-3 font-medium">Event</th>
+                <th scope="col" className="w-[24%] px-4 py-3 font-medium">Jadwal (WIB)</th>
                 <th scope="col" className="w-[16%] px-4 py-3 font-medium">Status</th>
-                <th scope="col" className="w-[17%] px-4 py-3 font-medium">Kuota</th>
-                <th scope="col" className="w-[11%] px-4 py-3 font-medium">Aksi</th>
+                <th scope="col" className="w-[16%] px-4 py-3 font-medium">Kuota</th>
+                <th scope="col" className="w-[20%] px-4 py-3 font-medium">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -76,9 +76,14 @@ export default async function DashboardPage() {
                     <p className="mt-1 text-xs text-muted-foreground">Sisa kuota: {event.maxQuota - event.registeredCount} dari {event.maxQuota}</p>
                   </td>
                   <td className="px-4 py-3">
-                    <Link href={`/dashboard/events/${event.id}/edit`} aria-label={`${event.status === "completed" ? "Lihat event" : "Edit event"}: ${event.title}`} className="inline-flex min-h-10 items-center rounded-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                      {event.status === "completed" ? "Lihat event" : "Edit"}
-                    </Link>
+                    <div className="flex flex-col items-start gap-1">
+                      <Link href={`/dashboard/events/${event.id}/registrants`} aria-label={`Peserta terdaftar: ${event.title}`} className="inline-flex min-h-10 items-center rounded-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                        Peserta ({event.registeredCount})
+                      </Link>
+                      <Link href={`/dashboard/events/${event.id}/edit`} aria-label={`${event.status === "completed" ? "Lihat event" : "Edit event"}: ${event.title}`} className="inline-flex min-h-10 items-center rounded-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                        {event.status === "completed" ? "Lihat event" : "Edit"}
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}
