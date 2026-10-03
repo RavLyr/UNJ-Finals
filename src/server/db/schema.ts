@@ -12,7 +12,7 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }, (table) => [
   check("users_role_check", sql`${table.role} in ('organizer', 'attendee', 'platform_admin')`),
-]);
+]).enableRLS();
 
 export const workspaces = pgTable("workspaces", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -21,7 +21,7 @@ export const workspaces = pgTable("workspaces", {
   slug: text("slug").notNull().unique(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}).enableRLS();
 
 export const events = pgTable("events", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -44,7 +44,7 @@ export const events = pgTable("events", {
   uniqueIndex("events_workspace_slug_active_unique").on(table.workspaceId, table.slug).where(sql`${table.deletedAt} is null`),
   check("events_max_quota_check", sql`${table.maxQuota} > 0`),
   check("events_status_check", sql`${table.status} in ('draft', 'published', 'cancelled', 'completed')`),
-]);
+]).enableRLS();
 
 export const registrations = pgTable("registrations", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -59,4 +59,4 @@ export const registrations = pgTable("registrations", {
 }, (table) => [
   uniqueIndex("registrations_event_email_unique").on(table.eventId, table.email),
   check("registrations_email_lowercase_check", sql`${table.email} = lower(${table.email})`),
-]);
+]).enableRLS();
