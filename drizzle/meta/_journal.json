@@ -8,6 +8,13 @@
       "when": 1790992641883,
       "tag": "0000_ambiguous_ender_wiggin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790995195638,
+      "tag": "0001_enable_application_rls",
+      "breakpoints": true
     }
   ]
 }
