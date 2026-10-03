@@ -1,4 +1,3 @@
-import "./luma.css";
 import { and, asc, eq, isNull } from "drizzle-orm";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
