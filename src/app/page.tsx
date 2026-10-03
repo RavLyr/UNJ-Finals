@@ -1,33 +1,20 @@
 import "./luma.css";
-import { and, asc, eq, isNull } from "drizzle-orm";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Hero } from "@/components/hero";
 import { Features } from "@/components/features";
 import { EventsSection } from "@/components/events-section";
 import { CtaSection } from "@/components/cta-section";
-import { getDb } from "@/server/db";
-import { events, workspaces } from "@/server/db/schema";
-import type { Event } from "@/lib/types";
+import { getPublishedEvents } from "@/server/queries/public";
 
 // DB query at request time — never prerender at build (CI has no DATABASE_URL).
 export const dynamic = "force-dynamic";
 
 export default async function LandingPage() {
-  const rows = await getDb()
-    .select({ event: events, workspaceSlug: workspaces.slug })
-    .from(events)
-    .innerJoin(workspaces, eq(events.workspaceId, workspaces.id))
-    .where(and(eq(events.status, "published"), isNull(events.deletedAt)))
-    .orderBy(asc(events.dateTime));
-
-  const publishedEvents = rows.map((row) => ({
-    event: row.event as Event,
-    workspaceSlug: row.workspaceSlug,
-  }));
+  const publishedEvents = await getPublishedEvents();
 
   return (
-    <>
+    <div className="landing-page">
       <SiteHeader />
       <main>
         <Hero />
@@ -36,6 +23,6 @@ export default async function LandingPage() {
         <CtaSection />
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

@@ -49,7 +49,7 @@ export function Features() {
   return (
     <section className="features section">
       <div className="container">
-        <h2 className="cta__title" style={{ fontSize: "var(--text-4xl)" }}>
+        <h2 className="cta__title" style={{ fontSize: "var(--landing-text-4xl)" }}>
           Semua yang Anda butuhkan
         </h2>
         <div className="features__grid">

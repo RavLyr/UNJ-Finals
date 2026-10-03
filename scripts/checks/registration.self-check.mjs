@@ -1,5 +1,5 @@
 // Opt-in, existing test data only:
-// DATABASE_URL=... REGISTRATION_CHECK_ID=<existing test registration UUID> bun src/server/actions/registration.self-check.mjs
+// DATABASE_URL=... REGISTRATION_CHECK_ID=<existing test registration UUID> bun scripts/checks/registration.self-check.mjs
 import assert from "node:assert/strict";
 import { mock } from "bun:test";
 import postgres from "postgres";
@@ -27,7 +27,7 @@ try {
   }));
   mock.module("next/cache", () => ({ revalidatePath: () => assert.fail("Failed registration revalidated paths") }));
   mock.module("next/navigation", () => ({ redirect: () => assert.fail("Failed registration redirected") }));
-  const { registerParticipant } = await import("./register.ts");
+  const { registerParticipant } = await import("../../src/server/actions/register.ts");
   const form = new FormData();
   for (const [key, value] of Object.entries({
     eventId: existing.event_id, name: existing.name, email: existing.email, phone: existing.phone ?? "",
