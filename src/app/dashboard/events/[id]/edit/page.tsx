@@ -15,9 +15,16 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
     <div>
       <h1 className="text-2xl font-bold">{event.status === "completed" ? "Arsip event" : "Edit event"}</h1>
       <p className="mt-1 break-words text-sm text-muted-foreground [overflow-wrap:anywhere]">{event.title}</p>
-      <Link href={`/dashboard/events/${event.id}/registrants`} className="mt-3 inline-flex min-h-10 items-center rounded-sm text-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        Peserta terdaftar ({event.registeredCount})
-      </Link>
+      <div className="mt-3 flex flex-wrap items-center gap-4">
+        <Link href={`/dashboard/events/${event.id}/registrants`} className="inline-flex min-h-10 items-center rounded-sm text-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+          Peserta terdaftar ({event.registeredCount})
+        </Link>
+        {event.status === "draft" || event.status === "published" ? (
+          <Link href={`/dashboard/events/${event.id}/check-in`} className="inline-flex min-h-10 items-center rounded-sm text-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            Check-in peserta
+          </Link>
+        ) : null}
+      </div>
     </div>
     <EventForm key={`${event.id}-${event.status}`} event={event} preview={preview} />
     <div className="max-w-3xl border-t pt-6">
