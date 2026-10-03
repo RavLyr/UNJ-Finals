@@ -80,6 +80,11 @@ export default async function DashboardPage() {
                       <Link href={`/dashboard/events/${event.id}/registrants`} aria-label={`Peserta terdaftar: ${event.title}`} className="inline-flex min-h-10 items-center rounded-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         Peserta ({event.registeredCount})
                       </Link>
+                      {event.status === "draft" || event.status === "published" ? (
+                        <Link href={`/dashboard/events/${event.id}/check-in`} aria-label={`Check-in peserta: ${event.title}`} className="inline-flex min-h-10 items-center rounded-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                          Check-in
+                        </Link>
+                      ) : null}
                       <Link href={`/dashboard/events/${event.id}/edit`} aria-label={`${event.status === "completed" ? "Lihat event" : "Edit event"}: ${event.title}`} className="inline-flex min-h-10 items-center rounded-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         {event.status === "completed" ? "Lihat event" : "Edit"}
                       </Link>
