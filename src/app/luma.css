@@ -1588,3 +1588,29 @@ h1, h2, h3, h4, h5, h6 { line-height: 1.2; letter-spacing: -0.02em; }
 .hero__word span:nth-child(2) { color: #8b5cf6; }
 .hero__word span:nth-child(3) { color: #06b6d4; }
 .hero__word span:nth-child(4) { color: #10b981; }
+
+/* RuangAcara: tickets list */
+.tickets-page { padding: var(--space-3xl) 0; min-height: 60vh; }
+.tickets-page__title { font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--space-xs); }
+.tickets-page__subtitle { color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: var(--space-2xl); }
+.tickets-page__empty { text-align: center; padding: var(--space-3xl) 0; color: var(--color-text-muted); display: flex; flex-direction: column; gap: var(--space-lg); align-items: center; }
+.tickets-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-md); max-width: 720px; }
+.tickets-list__item { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-lg); background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-lg); text-decoration: none; color: inherit; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.tickets-list__item:hover { border-color: var(--color-primary); box-shadow: var(--shadow-md); }
+.tickets-list__event { font-size: var(--text-base); font-weight: 600; margin-bottom: 2px; }
+.tickets-list__meta { font-size: var(--text-sm); color: var(--color-text-muted); margin-bottom: var(--space-xs); }
+.tickets-list__code { font-family: monospace; font-size: var(--text-xs); letter-spacing: 0.08em; color: var(--color-primary); font-weight: 600; }
+
+/* RuangAcara: ticket QR sizing (FRD: min 200px desktop, 150px mobile) */
+.ticket__qr { width: 200px; height: 200px; }
+.ticket__qr svg { width: 100%; height: 100%; display: block; }
+@media (max-width: 640px) {
+  .ticket__qr { width: 150px; height: 150px; }
+}
+
+/* RuangAcara: print-friendly ticket */
+@media print {
+  .site-header, .site-footer, .ticket-page__actions { display: none !important; }
+  .ticket-page { padding: 0; }
+  .ticket { box-shadow: none; margin: 0 auto; }
+}
