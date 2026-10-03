@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useId, useRef } from "react";
+import { useActionState, useEffect, useId, useRef, useState } from "react";
 import { formatEventDate } from "@/lib/format-date";
 import type { ActionResult } from "@/lib/types";
 import { checkIn } from "@/server/actions/check-in";
+import { CheckInScanner } from "@/components/check-in-scanner";
 
 type CheckInData = { name: string; ticketId: string; checkedInAt: string };
 
@@ -11,6 +12,7 @@ export function CheckInForm({ eventId, preview = false }: { eventId: string; pre
   const id = useId();
   const form = useRef<HTMLFormElement>(null);
   const handled = useRef<ActionResult<CheckInData> | null>(null);
+  const [ticketId, setTicketId] = useState("");
   const [state, action, pending] = useActionState<ActionResult<CheckInData> | null, FormData>(checkIn, null);
   const failure = state && !state.success ? state : null;
   const success = state?.success ? state.data : null;
@@ -25,8 +27,8 @@ export function CheckInForm({ eventId, preview = false }: { eventId: string; pre
       (invalid ?? form.current?.querySelector<HTMLElement>('[role="alert"]'))?.focus();
       return;
     }
-    form.current?.reset();
-    form.current?.querySelector<HTMLElement>('[role="status"]')?.focus();
+    setTicketId("");
+    form.current?.querySelector<HTMLElement>('[role="status"][data-checkin-success]')?.focus();
   }, [state]);
 
   const alreadyCheckedIn = failure?.error.startsWith("Sudah check-in");
@@ -37,13 +39,15 @@ export function CheckInForm({ eventId, preview = false }: { eventId: string; pre
     <div className="space-y-2">
       <label htmlFor={`${id}-ticket`} className="block text-sm font-medium">ID tiket</label>
       <p id={`${id}-ticket-hint`} className="text-sm text-muted-foreground">
-        Pindai QR tiket atau ketik ID tiket manual, format WBN-YYYYMMDD-XXXX.
+        Pindai QR tiket dengan kamera di bawah, atau ketik ID tiket manual, format WBN-YYYYMMDD-XXXX.
       </p>
       <input
         id={`${id}-ticket`}
         name="ticketId"
         className={inputClass}
         placeholder="WBN-20261004-A1B2"
+        value={ticketId}
+        onChange={(event) => setTicketId(event.target.value.toUpperCase())}
         required
         maxLength={17}
         spellCheck={false}
@@ -68,12 +72,13 @@ export function CheckInForm({ eventId, preview = false }: { eventId: string; pre
       </button>
     </fieldset>
     {success && (
-      <div role="status" tabIndex={-1} className="space-y-1 rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-900 focus-visible:outline-2 focus-visible:outline-ring">
+      <div role="status" data-checkin-success tabIndex={-1} className="space-y-1 rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-900 focus-visible:outline-2 focus-visible:outline-ring">
         <p className="font-medium">Check-in berhasil.</p>
         <p className="break-words [overflow-wrap:anywhere]">{success.name}</p>
         <p className="tabular-nums">{success.ticketId}</p>
         <p><time dateTime={success.checkedInAt}>{formatEventDate(success.checkedInAt)}</time></p>
       </div>
     )}
+    <CheckInScanner onDetect={setTicketId} disabled={preview || pending} />
   </form>;
 }
