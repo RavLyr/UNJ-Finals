@@ -10,6 +10,9 @@ import { getDb } from "@/server/db";
 import { events, workspaces } from "@/server/db/schema";
 import type { Event } from "@/lib/types";
 
+// DB query at request time — never prerender at build (CI has no DATABASE_URL).
+export const dynamic = "force-dynamic";
+
 export default async function LandingPage() {
   const rows = await getDb()
     .select({ event: events, workspaceSlug: workspaces.slug })
