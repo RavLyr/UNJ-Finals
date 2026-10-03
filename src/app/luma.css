@@ -1614,3 +1614,45 @@
   .landing-page .ticket-page { padding: 0; }
   .landing-page .ticket { box-shadow: none; margin: 0 auto; }
 }
+
+/* RuangAcara: logged-in navbar identity */
+.landing-page .nav__user {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-sm);
+  padding: 4px 12px 4px 4px;
+  border: 1px solid var(--landing-color-border-light);
+  border-radius: var(--landing-radius-full);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--landing-transition-fast), background var(--landing-transition-fast);
+}
+.landing-page .nav__user:hover { border-color: var(--landing-color-primary); background: #f8f8ff; }
+.landing-page .nav__user .nav__avatar { flex-shrink: 0; }
+.landing-page .nav__user-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.landing-page .nav__user-name {
+  font-size: var(--landing-text-sm);
+  font-weight: 600;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.landing-page .nav__user-role { font-size: var(--landing-text-xs); color: var(--landing-color-text-muted); }
+
+/* RuangAcara: registration identity (read-only, from session) */
+.landing-page .reg-identity {
+  padding: var(--landing-space-md);
+  background: var(--landing-color-bg);
+  border: 1px solid var(--landing-color-border-light);
+  border-radius: var(--landing-radius-md);
+}
+.landing-page .reg-identity__name { font-size: var(--landing-text-sm); font-weight: 600; }
+.landing-page .reg-identity__email { font-size: var(--landing-text-sm); color: var(--landing-color-text-muted); word-break: break-all; }
+.landing-page .reg-identity__note { font-size: var(--landing-text-xs); color: var(--landing-color-text-muted); margin-top: var(--landing-space-sm); }
+
+/* RuangAcara: mobile — keep avatar + logout visible when nav links collapse */
+@media (max-width: 768px) {
+  .landing-page .nav__user { padding: 4px; border: none; }
+  .landing-page .nav__user-text { display: none; }
+}

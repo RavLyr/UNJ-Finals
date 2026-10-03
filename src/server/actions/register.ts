@@ -13,7 +13,8 @@ import {
   actionFailure, eventIdSchema, previewMutationGuard, revalidateEventPaths, validationFailure,
 } from "./helpers";
 
-const participantSchema = registrationSchema.extend({ eventId: eventIdSchema });
+// Name and email come from the attendee session, never from the submitted form.
+const participantSchema = registrationSchema.pick({ phone: true }).extend({ eventId: eventIdSchema });
 
 export async function registerParticipant(
   _prevState: ActionResult<{ ticketId: string }> | null,
@@ -39,6 +40,14 @@ export async function registerParticipant(
       }
       const parsed = participantSchema.safeParse(Object.fromEntries(formData));
       if (!parsed.success) return validationFailure(parsed.error);
+      const identity = registrationSchema.shape.name.safeParse(session.user.name);
+      if (!identity.success) {
+        return { success: false, error: "Lengkapi nama pada profil Anda sebelum mendaftar." };
+      }
+      const email = registrationSchema.shape.email.safeParse(session.user.email);
+      if (!email.success) {
+        return { success: false, error: "Email akun tidak valid. Silakan masuk ulang." };
+      }
       const result = await getDb().transaction(async (tx) => {
         const [event] = await tx.select().from(events).where(and(
           eq(events.id, parsed.data.eventId), eq(events.status, "published"), isNull(events.deletedAt),
@@ -54,7 +63,7 @@ export async function registerParticipant(
         for (let attempt = 0; attempt < 2; attempt++) {
           const [registration] = await tx.insert(registrations).values({
             eventId: event.id, attendeeId: session.user.id,
-            name: parsed.data.name, email: parsed.data.email, phone: parsed.data.phone ?? null,
+            name: identity.data, email: email.data, phone: parsed.data.phone ?? null,
             ticketId: generateTicketId(),
           }).onConflictDoNothing({ target: registrations.ticketId })
             .returning({ ticketId: registrations.ticketId });

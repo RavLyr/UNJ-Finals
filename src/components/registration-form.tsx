@@ -5,11 +5,11 @@ import { registerParticipant } from "@/server/actions/register";
 
 interface RegistrationFormProps {
   eventId: string;
-  defaultName: string;
-  defaultEmail: string;
+  attendeeName: string;
+  attendeeEmail: string;
 }
 
-export function RegistrationForm({ eventId, defaultName, defaultEmail }: RegistrationFormProps) {
+export function RegistrationForm({ eventId, attendeeName, attendeeEmail }: RegistrationFormProps) {
   const [state, formAction, pending] = useActionState(registerParticipant, null);
   const fieldErrors = state?.success === false ? state.fieldErrors : undefined;
 
@@ -18,23 +18,14 @@ export function RegistrationForm({ eventId, defaultName, defaultEmail }: Registr
       <input type="hidden" name="eventId" value={eventId} />
 
       <div className="form-group">
-        <label className="form-label" htmlFor="reg-name">Nama</label>
-        <input
-          id="reg-name" name="name" className="form-input" placeholder="Nama lengkap"
-          defaultValue={defaultName} required maxLength={100}
-          aria-describedby={fieldErrors?.name ? "reg-name-error" : undefined}
-        />
-        {fieldErrors?.name && <p id="reg-name-error" role="alert" className="event-card__stock">{fieldErrors.name}</p>}
-      </div>
-
-      <div className="form-group">
-        <label className="form-label" htmlFor="reg-email">Email</label>
-        <input
-          id="reg-email" name="email" type="email" className="form-input" placeholder="email@contoh.com"
-          defaultValue={defaultEmail} required maxLength={200}
-          aria-describedby={fieldErrors?.email ? "reg-email-error" : undefined}
-        />
-        {fieldErrors?.email && <p id="reg-email-error" role="alert" className="event-card__stock">{fieldErrors.email}</p>}
+        <span className="form-label">Pemeserta</span>
+        <div className="reg-identity">
+          <p className="reg-identity__name">{attendeeName}</p>
+          <p className="reg-identity__email">{attendeeEmail}</p>
+        </div>
+        <p className="reg-identity__note">
+          Data diambil dari akun Anda. Tiket dan email konfirmasi mengikuti data ini.
+        </p>
       </div>
 
       <div className="form-group">
